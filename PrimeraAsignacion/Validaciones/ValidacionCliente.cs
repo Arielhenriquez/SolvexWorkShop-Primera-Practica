@@ -22,7 +22,7 @@ namespace PrimeraAsignacion.Validaciones
             RuleFor(address => address.DireccionCliente).SetValidator(new ValidacionDireccion());
 
             RuleFor(model => model.FechaNacimiento)
-            .GreaterThanOrEqualTo(DateTime.Today.AddYears(-18))
+            .LessThanOrEqualTo(DateTime.Today.AddYears(-18))
             .WithMessage("Su edad debe ser mayor a 18")
             .LessThanOrEqualTo(DateTime.Today) 
             .WithMessage("Fecha invalida");
