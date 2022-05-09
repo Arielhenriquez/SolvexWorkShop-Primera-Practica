@@ -8,11 +8,11 @@ namespace PrimeraAsignacion.Validaciones
         public ValidacionCliente()
         {
             RuleFor(name => name.NombreCompleto).NotNull()
-                .NotEmpty()
-                .WithMessage("El campo no puede estar vacio");
+                .MinimumLength(2)
+                .WithMessage("El campo debe contener mas de un caracter");
 
-            RuleFor(surName => surName.Apellidos).NotEmpty()
-                .NotNull().WithMessage("Este campo es obligatorio");
+            RuleFor(surName => surName.Apellidos).NotEmpty().MaximumLength(20)
+                .WithMessage("Este campo debe contener menos de 20 caracteres");
 
             RuleFor(age => age.Edad)
                 .NotEmpty()
