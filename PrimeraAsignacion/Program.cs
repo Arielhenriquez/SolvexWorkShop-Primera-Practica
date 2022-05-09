@@ -1,6 +1,7 @@
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PrimeraAsignacion;
@@ -16,12 +17,19 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.PropertyNamingPolicy = null;
 });
 
+//Fluent Validation Config
 builder.Services.AddFluentValidation(c => c.RegisterValidatorsFromAssembly 
 (Assembly.GetExecutingAssembly()));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddHttpLogging(httpLogging =>
+{
+    httpLogging.LoggingFields = HttpLoggingFields.All;
+});
+
+//JWT config
 builder.Services.AddSwaggerGen(c => {
 
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "LoginApi", Version = "v1" });
@@ -48,8 +56,8 @@ builder.Services.AddSwaggerGen(c => {
     }
 });
 
-
 });
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -63,7 +71,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"]))
         };
 });
-
 
 //AutoMapper Config
 var mapperConfig = new MapperConfiguration(m =>
@@ -81,6 +88,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c=> c.SwaggerEndpoint("/swagger/v1/swagger.json", "LoginApi v1"));
 }
+
+app.UseHttpLogging();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

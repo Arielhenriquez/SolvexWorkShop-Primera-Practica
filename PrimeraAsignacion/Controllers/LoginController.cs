@@ -19,7 +19,6 @@ namespace PrimeraAsignacion.Controllers
             _configuration = configuration;
         }
 
-
         [HttpPost("Registro")]
         public IActionResult Registro(RegistroUsuario registroUsuario)
         {

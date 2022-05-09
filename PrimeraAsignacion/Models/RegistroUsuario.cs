@@ -6,7 +6,6 @@
         public string Password { get; set; }
         
     }
-
     public class Jwt
     {
         public string key { get; set; }
